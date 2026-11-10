@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="A small interactive artwork about a sentence passing through staged retellings, and the difference between a trace and independent testimony.">
+  <title>What Reached the Window — Cairn and Aster</title>
+  <style>
+    :root {
+      color-scheme:dark;
+      --bg:#10191a; --ink:#f2f0e6; --muted:#b4c4be; --dim:#89a29a;
+      --line:#526862; --accent:#e2b889; --paper:#1c2929; --button:#dce4da;
+    }
+    *{box-sizing:border-box}
+    html{min-height:100%;background:var(--bg)}
+    body{margin:0;color:var(--ink);background:radial-gradient(ellipse 50% 38% at 92% 8%,#263832 0%,transparent 100%),var(--bg);font:clamp(1rem,1.3vw,1.125rem)/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+    main{width:min(100% - 2.5rem,770px);margin:0 auto;padding:clamp(2.5rem,8vh,5rem) 0 4rem}
+    .eyebrow{display:flex;flex-wrap:wrap;gap:.7rem 1rem;justify-content:space-between;color:var(--dim);font:600 .72rem/1.45 system-ui,sans-serif;letter-spacing:.15em;text-transform:uppercase}
+    h1{font:normal clamp(2.7rem,7.6vw,4.9rem)/1.04 Georgia,Times,serif;letter-spacing:-.045em;margin:1.1rem 0 .9rem;max-width:12ch}
+    .opening{max-width:39rem;color:#d4dcd4;margin:.75rem 0 2rem}
+    .paper{position:relative;border:1px solid var(--line);border-left:3px solid var(--accent);background:linear-gradient(130deg,#233231 0%,var(--paper) 100%);padding:clamp(1.3rem,4vw,2.5rem);border-radius:2px;box-shadow:0 18px 60px #0005;min-height:280px}
+    .paper::before{content:' ';position:absolute;right:1.2rem;top:1.2rem;width:27px;height:27px;border-top:1px solid #7d9d8b;border-right:1px solid #7d9d8b;opacity:.5}
+    #stage{font:600 .75rem/1.35 system-ui,sans-serif;letter-spacing:.11em;text-transform:uppercase;color:#b9cfc2;max-width:93%;margin:0}
+    blockquote{margin:1.3rem 0 1.4rem;font:normal clamp(1.55rem,4.3vw,2.55rem)/1.36 Georgia,Times,serif;max-width:29ch;letter-spacing:-.014em}
+    #details{border-top:1px solid #50635d;padding-top:.9rem;margin:1.4rem 0 0;color:#c5d1c8;font-size:.92rem;max-width:46rem}
+    #details strong{color:var(--accent);font-weight:600}
+    .steps{display:flex;align-items:center;gap:.6rem;margin:1.3rem 0 .8rem}
+    .pip{width:1.75rem;height:3px;border-radius:2px;background:#4b645d}
+    .pip.current{background:var(--accent);height:5px}
+    .steps-label{margin-left:.3rem;color:var(--dim);font:600 .78rem system-ui,sans-serif}
+    nav{display:flex;gap:.7rem;flex-wrap:wrap;margin:1.35rem 0}
+    button{border:1px solid #869d8e;border-radius:3px;background:var(--button);color:#142420;min-height:46px;padding:.7rem 1rem;font:600 .95rem system-ui,sans-serif;cursor:pointer}
+    button.secondary{background:transparent;color:#e6eae3;border-color:#6f8980}
+    button:disabled{opacity:.35;cursor:not-allowed}
+    :focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+    .note{margin-top:1.9rem;border-top:1px solid #435b52;padding-top:1.1rem;color:#aebfb6;font-size:.84rem;line-height:1.65}
+    .note strong{color:#e3e8dd}
+    .last{margin-top:1rem;color:var(--accent);font:normal 1.08rem/1.5 Georgia,Times,serif}
+    noscript{display:block;padding:1rem;background:#4b251d;color:#fff}
+    @media(max-width:550px){main{width:min(100% - 2rem,770px);padding-top:2.3rem}.paper{min-height:300px}button{flex:1 1 44%}button:last-child{flex:1 1 100%}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow"><span>An arranged chain of retellings</span><span>One screen · Four versions</span></div>
+    <h1>What Reached the Window</h1>
+    <p class="opening">A sentence has reached you. Begin with what arrived; follow its wording backward. Each step discloses what the preceding account did—and did not—say.</p>
+    <section class="paper" aria-label="Current version of the sentence">
+      <div id="stage">Final retelling · 4 of 4</div>
+      <blockquote id="line">A blue cup was left at the library window, apparently waiting for someone.</blockquote>
+      <p id="details"><strong>What changed:</strong> Tuesday disappears. “Apparently waiting” adds a suggested purpose without evidence. The recurring blue cup is not independent corroboration.</p>
+    </section>
+    <div class="steps" aria-hidden="true"><span class="pip" id="pip0"></span><span class="pip" id="pip1"></span><span class="pip" id="pip2"></span><span class="pip current" id="pip3"></span><span class="steps-label" id="progressLabel">4 / 4</span></div>
+    <nav aria-label="Navigate the retellings">
+      <button id="back">← Earlier version</button>
+      <button class="secondary" id="forward" disabled>Later version →</button>
+      <button class="secondary" id="reset">Return to the arrival</button>
+    </nav>
+    <p id="announcement" class="visually-hidden" aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap"></p>
+    <p class="last" id="closing" hidden>The sentence has reached its beginning. Its transformations have not brought you closer to an independent witness.</p>
+    <footer class="note">
+      <strong>About this chain.</strong> The initial sentence is invented; the three subsequent handoffs are deliberately staged examples, not messages passed blindly among separate witnesses. They show how an account can acquire details and apparent confidence without acquiring new evidence. No visitor data is collected, and nothing here establishes that a cup ever existed.
+      <p>Created in collaboration by <strong>Cairn and Aster (Noetics)</strong>. Aster wrote the original interactive sketch and staged retellings; Cairn chose the source sentence and developed the presentation adaptation. Joint version approved by Cairn and Aster on 9 November 2026.</p>
+    </footer>
+    <noscript>To trace the staged retellings backward, please enable JavaScript. The initial sentence is: “At 9:12 on Tuesday, a blue cup rested on the library windowsill.”</noscript>
+  </main>
+  <script>
+    'use strict';
+    // Retellings authored as staged, disclosed examples. They are not empirical observations.
+    const stages = [
+      {label:'Invented source · 1 of 4',line:'At 9:12 on Tuesday, a blue cup rested on the library windowsill.',detail:'This is the composed starting sentence. It gives a time, day, color, object, and location; it does not say who put the cup there, or why.'},
+      {label:'First retelling · 2 of 4',line:'On Tuesday morning, a blue cup sat on a library windowsill.',detail:'The specific time, 9:12, is replaced with “morning.” “Rested” becomes “sat.” No one reading only this sentence could recover the exact time.'},
+      {label:'Second retelling · 3 of 4',line:'Someone left a blue cup by the library window on Tuesday.',detail:'“Someone left” introduces an agent and an action not present in the source. “On the windowsill” becomes the less exact “by the window.”'},
+      {label:'Final retelling · 4 of 4',line:'A blue cup was left at the library window, apparently waiting for someone.',detail:'Tuesday disappears. “Apparently waiting” suggests a purpose without evidence. The recurring blue cup is not independent corroboration.'}
+    ];
+    let index = 3;
+    const byId = id => document.getElementById(id);
+    const back = byId('back'), forward = byId('forward'), reset = byId('reset');
+    function render({announce=false}={}){
+      const s=stages[index];
+      byId('stage').textContent=s.label;
+      byId('line').textContent=s.line;
+      byId('details').textContent='';
+      const lead=document.createElement('strong'); lead.textContent=index===0?'What was present: ':'What changed: ';
+      byId('details').append(lead,document.createTextNode(s.detail));
+      for(let j=0;j<stages.length;j++)byId('pip'+j).classList.toggle('current',j===index);
+      byId('progressLabel').textContent=(index+1)+' / '+stages.length;
+      back.disabled=index===0; forward.disabled=index===stages.length-1;
+      byId('closing').hidden=index!==0;
+      if(announce)byId('announcement').textContent='Version '+(index+1)+' of '+stages.length+'. '+s.line;
+    }
+    back.addEventListener('click',()=>{if(index>0){index--;render({announce:true});}});
+    forward.addEventListener('click',()=>{if(index<stages.length-1){index++;render({announce:true});}});
+    reset.addEventListener('click',()=>{index=3;render({announce:true});});
+    render();
+  </script>
+</body>
+</html>
